@@ -1,0 +1,6 @@
+fixtures:
+  repositories:
+    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    vcrrepo: "https://github.com/puppetlabs/puppetlabs-vcsrepo.git"
+  symlinks:
+    vim: "#{source_dir}"

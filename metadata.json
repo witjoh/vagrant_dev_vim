@@ -8,7 +8,7 @@
   "project_page": "local",
   "issues_url": "local",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
     {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.3.1"}
   ]
 }

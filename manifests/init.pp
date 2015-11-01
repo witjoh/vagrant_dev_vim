@@ -1,48 +1,93 @@
 # Class: vim
 # ===========================
 #
-# Full description of class vim here.
+# Installs vim and customizes the .vimrc
+# If not run as root, we ommit the parameters and only install
+# the .vim stuf for the calling user.
+#
+# if run as root, the vimrc files are also installed in
+# the user_list home directories.
+#
+# Users should excist
 #
 # Parameters
 # ----------
 #
-# Document parameters here.
-#
-# * `sample parameter`
-# Explanation of what this parameter affects and what it defaults to.
-# e.g. "Specify one or more upstream ntp servers as an array."
-#
-# Variables
-# ----------
-#
-# Here you should define a list of variables that this module would require.
-#
-# * `sample variable`
-#  Explanation of how this variable affects the function of this class and if
-#  it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#  External Node Classifier as a comma separated list of hostnames." (Note,
-#  global variables should be avoided in favor of class parameters as
-#  of Puppet 2.6.)
+# * `user_list`
+# When run as root, we install the .vim files and dirs for those users, 
+# otherwise, ignored. Default = ''
 #
 # Examples
 # --------
 #
 # @example
 #    class { 'vim':
-#      servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#      user_list  => [ 'user1', 'user2' ],
 #    }
 #
 # Authors
 # -------
 #
-# Author Name <author@domain.com>
+# Johan De Wit <johan@koewacht.net>
 #
 # Copyright
 # ---------
 #
-# Copyright 2015 Your name here, unless otherwise noted.
+# Copyright 2015 Johan De Wit, unless otherwise noted.
 #
-class vim {
+class vim (
+  Array[String] $user_list = [],
+) {
 
+  if $facts['os']['name'] != "Fedora" {
 
+    fail('Only Fedora runs on my laptops !')
+
+  }
+
+  if $facts['id'] == 'root' {
+
+    package { 'vim-enhanced':
+      ensure => present,
+    }
+
+    $vim_user_list = $user_list
+
+  } else {
+
+    $vim_user_list = [ $facts['id'] ]
+
+  }
+
+  $vim_user_list.each  |String $value| {
+ 
+    if $value == 'root' {
+
+      Notify { "WARNING: Skipping vimrc for the root user": }
+    
+    } else {
+    
+      vcsrepo { "/home/$value/.vim":
+        ensure => present,
+        user   => $value,
+        source => 'https://github.com/ricciocri/vimrc',
+      }
+ 
+      exec { "init dot_vim":
+        command     => "/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status",
+        cwd         => "/home/$value/.vim",
+        refreshonly => true, 
+        subscribe   => Vcsrepo["/home/$value/.vim"],
+        user        => $value,
+      }
+  
+      file { "/home/$value/.vimrc":
+        ensure => file,
+        owner  => $value,
+        group  => $value,
+        mode   => '0640',
+        source => 'puppet://modules/vim/vimrc_full',
+      }
+    }
+  }
 }
