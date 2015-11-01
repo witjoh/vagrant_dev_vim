@@ -98,6 +98,14 @@ class vim (
         require  => Vcsrepo["/home/${value}/.vim"],
       }
 
+      ["candy.vim", "codeschool.vim", "vividchalk.vim"].each |String $file| {
+        file { "home/${value}/.vim/colors/${file}":
+          ensure => file,
+          owner  => $value,
+          group  => $value,
+          source => "puppet:///modules/vim/${file}",
+        }
+      }
     }
   }
 }
