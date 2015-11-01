@@ -97,8 +97,8 @@ class vim (
         provider => 'git',
         require  => Vcsrepo["/home/${value}/.vim"],
       }
-
-      ["candy.vim", "codeschool.vim", "vividchalk.vim"].each |String $file| {
+      ["candy.vim", "codeschool.vim", "vividchalk.vim", "antares.vim", "gryffin.vim",
+       "ingruti.vim", "molokai_dark.vim", "radicalgoodspeed.vim",].each |String $file| {
         file { "/home/${value}/.vim/colors/${file}":
           ensure => file,
           owner  => $value,
