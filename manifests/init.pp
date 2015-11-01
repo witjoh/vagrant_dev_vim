@@ -60,7 +60,7 @@ class vim (
   }
 
   $vim_user_list.each  |String $value| {
- 
+
     if $value == 'root' {
 
       Notify { "WARNING: Skipping vimrc for the root user": }
@@ -73,11 +73,11 @@ class vim (
         source   => 'https://github.com/ricciocri/vimrc',
         provider => 'git',
       }
- 
+
       exec { "init dot_vim_${value}":
         command     => "/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status",
         cwd         => "/home/${value}/.vim",
-        refreshonly => true, 
+        refreshonly => true,
         subscribe   => Vcsrepo["/home/${value}/.vim"],
         user        => $value,
       }
@@ -90,7 +90,7 @@ class vim (
         source => 'puppet:///modules/vim/vimrc_basic',
       }
 
-      vcsrepo { "/home/${value}/.vim/bundle":
+      vcsrepo { "/home/${value}/.vim/bundle/vim-colors-solarized":
         ensure   => present,
         user     => $value,
         source   => 'https://github.com/altercation/vim-colors-solarized.git',
