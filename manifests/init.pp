@@ -87,7 +87,7 @@ class vim (
         owner  => $value,
         group  => $value,
         mode   => '0640',
-        source => 'puppet://modules/vim/vimrc_full',
+        source => 'puppet:///modules/vim/vimrc_full',
       }
     }
   }
