@@ -67,28 +67,37 @@ class vim (
     
     } else {
     
-      vcsrepo { "/home/$value/.vim":
+      vcsrepo { "/home/${value}/.vim":
         ensure   => present,
         user     => $value,
         source   => 'https://github.com/ricciocri/vimrc',
         provider => 'git',
       }
  
-      exec { "init dot_vim_$value":
+      exec { "init dot_vim_${value}":
         command     => "/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status",
-        cwd         => "/home/$value/.vim",
+        cwd         => "/home/${value}/.vim",
         refreshonly => true, 
-        subscribe   => Vcsrepo["/home/$value/.vim"],
+        subscribe   => Vcsrepo["/home/${value}/.vim"],
         user        => $value,
       }
   
-      file { "/home/$value/.vimrc":
+      file { "/home/${value}/.vimrc":
         ensure => file,
         owner  => $value,
         group  => $value,
         mode   => '0640',
-        source => 'puppet:///modules/vim/vimrc_full',
+        source => 'puppet:///modules/vim/vimrc_basic',
       }
+
+      vcsrepo { "/home/${value}/.vim/bundle":
+        ensure   => present,
+        user     => $value,
+        source   => 'https://github.com/altercation/vim-colors-solarized.git',
+        provider => 'git',
+        require  => Vcsrepo["/home/${value}/.vim"],
+      }
+
     }
   }
 }

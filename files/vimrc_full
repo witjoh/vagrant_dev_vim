@@ -1,5 +1,5 @@
 call pathogen#infect()
-"set background=dark
+set background=dark
 syntax on
 colorscheme lucius
 LuciusWhite
@@ -24,7 +24,7 @@ set ruler
 set noshowmode
 set mouse=a
 let g:nerdtree_tabs_open_on_console_startup=1
-let NERDTreeShowBookmarks=1
+let NERDTreeShowBookmarks=0
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
