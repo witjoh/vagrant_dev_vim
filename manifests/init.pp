@@ -73,7 +73,7 @@ class vim (
         source => 'https://github.com/ricciocri/vimrc',
       }
  
-      exec { "init dot_vim":
+      exec { "init dot_vim_$value":
         command     => "/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status",
         cwd         => "/home/$value/.vim",
         refreshonly => true, 
