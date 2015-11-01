@@ -68,9 +68,10 @@ class vim (
     } else {
     
       vcsrepo { "/home/$value/.vim":
-        ensure => present,
-        user   => $value,
-        source => 'https://github.com/ricciocri/vimrc',
+        ensure  => present,
+        user    => $value,
+        source  => 'https://github.com/ricciocri/vimrc',
+        provide => 'git',
       }
  
       exec { "init dot_vim_$value":
