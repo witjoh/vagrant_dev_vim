@@ -1,6 +1,6 @@
 call pathogen#infect()
 set background=dark
-colorscheme candy
+"colorscheme candy
 syntax on
 
 set nocompatible
