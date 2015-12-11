@@ -10,5 +10,5 @@
 # http://docs.puppetlabs.com/guides/tests_smoke.html
 #
 class{ "vim":
-  user_list => ['root','user1','user2'],
+  user_list => ['vagrant'],
 }

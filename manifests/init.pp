@@ -39,7 +39,7 @@ class vim (
   Array[String] $user_list = [],
 ) {
 
-  if $facts['os']['name'] != "Fedora" {
+  if ( $facts['os']['name'] != "Fedora") and ($facts['os']['name'] != 'CentOS') {
 
     fail('Only Fedora runs on my laptops !')
 
