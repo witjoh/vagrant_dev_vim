@@ -21,7 +21,7 @@
 # --------
 #
 # @example
-#    class { 'vim':
+#  me  class { 'vim':
 #      user_list  => [ 'user1', 'user2' ],
 #    }
 #
@@ -39,7 +39,7 @@ class vim (
   Array[String] $user_list = [],
 ) {
 
-  if ( $::facts['os']['name'] != 'Fedora') and ($::facts['os']['name'] != 'CentOS') {
+  if ( $::facts['os']['family'] != 'RedHat') {
 
     fail('Only RedHat family is supported !')
 
