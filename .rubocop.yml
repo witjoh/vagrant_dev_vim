@@ -6,6 +6,8 @@ AllCops:
     - 'vendor/**/*'
     # Ignore code from test fixtures
     - 'spec/fixtures/**/*'
+    # retrospecs Vagrantfile
+    - 'Vagrantfile'
 
 Lint/ConditionPosition:
   Enabled: true
