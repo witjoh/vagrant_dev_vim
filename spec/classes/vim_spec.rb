@@ -42,7 +42,7 @@ describe 'vim' do
             )
             is_expected.to contain_exec("init dot_vim_#{user}").with(
               'command'     => '/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status',
-              'cwd'         => "/home/${value}/.vim",
+              'cwd'         => "/home/#{user}/.vim",
               'refreshonly' => 'true',
               'subscribe'   => "Vcsrepo[/home/#{user}/.vim]",
               'user'        => "#{user}",
