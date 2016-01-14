@@ -39,13 +39,13 @@ class vim (
   Array[String] $user_list = [],
 ) {
 
-  if ( $facts['os']['name'] != "Fedora") and ($facts['os']['name'] != 'CentOS') {
+  if ( $::facts['os']['name'] != 'Fedora') and ($::facts['os']['name'] != 'CentOS') {
 
-    fail('Only Fedora runs on my laptops !')
+    fail('Only RedHat family is supported !')
 
   }
 
-  if $facts['id'] == 'root' {
+  if $::facts['id'] == 'root' {
 
     package { 'vim-enhanced':
       ensure => present,
@@ -55,7 +55,7 @@ class vim (
 
   } else {
 
-    $vim_user_list = [ $facts['id'] ]
+    $vim_user_list = [ $::facts['id'] ]
 
   }
 
@@ -63,7 +63,7 @@ class vim (
 
     if $value == 'root' {
 
-      Notify { "WARNING: Skipping vimrc for the root user": }
+      Notify { 'WARNING: Skipping vimrc for the root user': }
     
     } else {
     
@@ -75,7 +75,7 @@ class vim (
       }
 
       exec { "init dot_vim_${value}":
-        command     => "/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status",
+        command     => '/usr/bin/git pull &&  /usr/bin/git submodule init &&  /usr/bin/git submodule update && /usr/bin/git submodule status',
         cwd         => "/home/${value}/.vim",
         refreshonly => true,
         subscribe   => Vcsrepo["/home/${value}/.vim"],
@@ -97,8 +97,9 @@ class vim (
         provider => 'git',
         require  => Vcsrepo["/home/${value}/.vim"],
       }
-      ["candy.vim", "codeschool.vim", "vividchalk.vim", "antares.vim", "gryffin.vim",
-       "ingruti.vim", "molokai_dark.vim", "radicalgoodspeed.vim",].each |String $file| {
+
+      ['candy.vim', 'codeschool.vim', 'vividchalk.vim', 'antares.vim', 'gryffin.vim',
+      'ingruti.vim', 'molokai_dark.vim', 'radicalgoodspeed.vim',].each |String $file| {
         file { "/home/${value}/.vim/colors/${file}":
           ensure => file,
           owner  => $value,
